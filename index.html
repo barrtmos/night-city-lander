@@ -1,229 +1,308 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IASHU</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@800&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
-<style>
-* { margin:0; padding:0; box-sizing:border-box; }
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>IASHU</title>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Syne:wght@800&family=DM+Sans:wght@300;400&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
 
-body {
-  background: #06050e;
-  height: 100vh; width: 100vw;
-  overflow: hidden;
-  font-family: 'DM Sans', sans-serif;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+            body {
+                background: #06050e;
+                height: 100vh;
+                width: 100vw;
+                overflow: hidden;
+                font-family: 'DM Sans', sans-serif;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
 
-canvas { position:fixed; inset:0; z-index:0; }
+            canvas {
+                position: fixed;
+                inset: 0;
+                z-index: 0;
+            }
 
-.wrap {
-  position: relative;
-  z-index: 2;
-  padding: 0 clamp(32px, 9vw, 140px);
-  width: 100%;
-  max-width: 960px;
-}
+            .wrap {
+                position: relative;
+                z-index: 2;
+                padding: 0 clamp(32px, 9vw, 140px);
+                width: 100%;
+                max-width: 960px;
+            }
 
-.eyebrow {
-  font-size: 11px;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.2);
-  margin-bottom: 28px;
-  opacity: 0;
-  animation: up 0.7s ease 0.1s forwards;
-}
+            .eyebrow {
+                font-size: 11px;
+                letter-spacing: 0.28em;
+                text-transform: uppercase;
+                color: rgba(255, 255, 255, 0.2);
+                margin-bottom: 28px;
+                opacity: 0;
+                animation: up 0.7s ease 0.1s forwards;
+            }
 
-h1 {
-  font-family: 'Syne', sans-serif;
-  font-size: clamp(60px, 12vw, 140px);
-  font-weight: 800;
-  line-height: 0.88;
-  letter-spacing: -0.04em;
-  opacity: 0;
-  animation: up 1s cubic-bezier(0.16,1,0.3,1) 0.2s forwards;
-}
+            h1 {
+                font-family: 'Syne', sans-serif;
+                font-size: clamp(60px, 12vw, 140px);
+                font-weight: 800;
+                line-height: 0.88;
+                letter-spacing: -0.04em;
+                opacity: 0;
+                animation: up 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+            }
 
-.ghost {
-  display: block;
-  color: transparent;
-  -webkit-text-stroke: 1px rgba(255,255,255,0.1);
-}
+            .ghost {
+                display: block;
+                color: transparent;
+                -webkit-text-stroke: 1px rgba(255, 255, 255, 0.1);
+            }
 
-.ishu {
-  display: block;
-  background: linear-gradient(110deg, #00e5ff 0%, #7b6fff 50%, #ff6fd8 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  position: relative;
-  animation: hueshift 8s ease-in-out infinite;
-}
+            .ishu {
+                display: block;
+                background: linear-gradient(
+                    110deg,
+                    #00e5ff 0%,
+                    #7b6fff 50%,
+                    #ff6fd8 100%
+                );
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                position: relative;
+                animation: hueshift 8s ease-in-out infinite;
+            }
 
-.ishu::after {
-  content: attr(data-t);
-  position: absolute;
-  inset: 0;
-  background: inherit;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  filter: blur(32px);
-  opacity: 0.35;
-  animation: flare 5s ease-in-out infinite;
-}
+            .ishu::after {
+                content: attr(data-t);
+                position: absolute;
+                inset: 0;
+                background: inherit;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                filter: blur(32px);
+                opacity: 0.35;
+                animation: flare 5s ease-in-out infinite;
+            }
 
-.sub {
-  margin-top: 32px;
-  font-size: clamp(14px, 1.6vw, 18px);
-  font-weight: 300;
-  color: rgba(255,255,255,0.3);
-  line-height: 1.65;
-  max-width: 360px;
-  opacity: 0;
-  animation: up 0.9s ease 0.45s forwards;
-}
+            .sub {
+                margin-top: 32px;
+                font-size: clamp(14px, 1.6vw, 18px);
+                font-weight: 300;
+                color: rgba(255, 255, 255, 0.3);
+                line-height: 1.65;
+                max-width: 360px;
+                opacity: 0;
+                animation: up 0.9s ease 0.45s forwards;
+            }
 
-.btn {
-  margin-top: 60px;
-  display: inline-flex;
-  align-items: center;
-  gap: 14px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 13px;
-  font-weight: 400;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  text-decoration: none;
-  color: rgba(255,255,255,0.85);
-  opacity: 0;
-  animation: up 0.9s ease 0.65s forwards;
-  transition: gap 0.3s;
-}
-.btn:hover { gap: 22px; }
+            .btn {
+                margin-top: 60px;
+                display: inline-flex;
+                align-items: center;
+                gap: 14px;
+                font-family: 'DM Sans', sans-serif;
+                font-size: 13px;
+                font-weight: 400;
+                letter-spacing: 0.12em;
+                text-transform: uppercase;
+                text-decoration: none;
+                color: rgba(255, 255, 255, 0.85);
+                opacity: 0;
+                animation: up 0.9s ease 0.65s forwards;
+                transition: gap 0.3s;
+            }
+            .btn:hover {
+                gap: 22px;
+            }
 
-.btn-line {
-  width: 40px; height: 1px;
-  background: rgba(255,255,255,0.35);
-  transition: width 0.3s;
-}
-.btn:hover .btn-line { width: 56px; }
+            .btn-line {
+                width: 40px;
+                height: 1px;
+                background: rgba(255, 255, 255, 0.35);
+                transition: width 0.3s;
+            }
+            .btn:hover .btn-line {
+                width: 56px;
+            }
 
-.btn-circle {
-  width: 44px; height: 44px;
-  border-radius: 50%;
-  border: 1px solid rgba(255,255,255,0.15);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 18px;
-  transition: border-color 0.3s, background 0.3s;
-}
-.btn:hover .btn-circle {
-  border-color: rgba(123,111,255,0.7);
-  background: rgba(123,111,255,0.1);
-}
+            .btn-circle {
+                width: 44px;
+                height: 44px;
+                border-radius: 50%;
+                border: 1px solid rgba(255, 255, 255, 0.15);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 18px;
+                transition:
+                    border-color 0.3s,
+                    background 0.3s;
+            }
+            .btn:hover .btn-circle {
+                border-color: rgba(123, 111, 255, 0.7);
+                background: rgba(123, 111, 255, 0.1);
+            }
 
-.clickid {
-  margin-top: 52px;
-  font-size: 10px;
-  color: rgba(255,255,255,0.04);
-  letter-spacing: 0.15em;
-  opacity: 0;
-  animation: up 0.9s ease 0.9s forwards;
-}
+            .clickid {
+                margin-top: 52px;
+                font-size: 10px;
+                color: rgba(255, 255, 255, 0.04);
+                letter-spacing: 0.15em;
+                opacity: 0;
+                animation: up 0.9s ease 0.9s forwards;
+            }
 
-@keyframes up {
-  from { opacity:0; transform:translateY(16px); }
-  to   { opacity:1; transform:none; }
-}
-@keyframes flare {
-  0%,100% { opacity:0.2; }
-  50%     { opacity:0.45; }
-}
-@keyframes hueshift {
-  0%,100% { filter: hue-rotate(0deg); }
-  50%     { filter: hue-rotate(30deg); }
-}
-</style>
-</head>
-<body>
+            @keyframes up {
+                from {
+                    opacity: 0;
+                    transform: translateY(16px);
+                }
+                to {
+                    opacity: 1;
+                    transform: none;
+                }
+            }
+            @keyframes flare {
+                0%,
+                100% {
+                    opacity: 0.2;
+                }
+                50% {
+                    opacity: 0.45;
+                }
+            }
+            @keyframes hueshift {
+                0%,
+                100% {
+                    filter: hue-rotate(0deg);
+                }
+                50% {
+                    filter: hue-rotate(30deg);
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="c"></canvas>
 
-<canvas id="c"></canvas>
+        <div class="wrap">
+            <div class="eyebrow">signal · 00:00:00</div>
 
-<div class="wrap">
-  <div class="eyebrow">signal · 00:00:00</div>
+            <h1>
+                <span class="ghost">ты ещё</span>
+                <span class="ghost">не знаешь</span>
+                <span class="ishu" data-t="ISHU">AISHU</span>
+            </h1>
 
-  <h1>
-    <span class="ghost">ты ещё</span>
-    <span class="ghost">не знаешь</span>
-    <span class="ishu" data-t="ISHU">AISHU</span>
-  </h1>
+            <p class="sub">Она уже в сети.<br />Осталось сделать шаг.</p>
 
-  <p class="sub">Она уже в сети.<br>Осталось сделать шаг.</p>
+            <a
+                class="btn"
+                href="https://clixtream.com/click.php?lp=1&key=7ce02f8581d94592bbc855dae0816bb1"
+            >
+                <span class="btn-line"></span>
+                <span>Познакомиться</span>
+                <span class="btn-circle">→</span>
+            </a>
 
-  <a class="btn" href="https://clixstream.com/click.php?lp=1&key=7ce02f8581d94592bbc855dae0816bb1">
-    <span class="btn-line"></span>
-    <span>Познакомиться</span>
-    <span class="btn-circle">→</span>
-  </a>
+            <div class="clickid">{clickid}</div>
+        </div>
 
-  <div class="clickid">{clickid}</div>
-</div>
+        <script>
+            const canvas = document.getElementById('c');
+            const ctx = canvas.getContext('2d');
+            let W, H;
+            function resize() {
+                W = canvas.width = window.innerWidth;
+                H = canvas.height = window.innerHeight;
+            }
+            resize();
+            window.addEventListener('resize', resize);
 
-<script>
-const canvas = document.getElementById('c');
-const ctx = canvas.getContext('2d');
-let W, H;
-function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
-resize();
-window.addEventListener('resize', resize);
+            const stars = Array.from({ length: 200 }, () => ({
+                x: Math.random() * 1000,
+                y: Math.random() * 1000,
+                r: Math.random() * 1.4 + 0.2,
+                o: Math.random() * 0.55 + 0.06,
+                vx: (Math.random() - 0.5) * 0.05,
+                vy: (Math.random() - 0.5) * 0.05,
+                phase: Math.random() * Math.PI * 2,
+                freq: Math.random() * 0.009 + 0.003,
+                hue:
+                    Math.random() > 0.85
+                        ? `0,229,255`
+                        : Math.random() > 0.5
+                          ? `123,111,255`
+                          : `220,220,255`,
+            }));
 
-const stars = Array.from({length: 200}, () => ({
-  x: Math.random() * 1000,
-  y: Math.random() * 1000,
-  r: Math.random() * 1.4 + 0.2,
-  o: Math.random() * 0.55 + 0.06,
-  vx: (Math.random() - 0.5) * 0.05,
-  vy: (Math.random() - 0.5) * 0.05,
-  phase: Math.random() * Math.PI * 2,
-  freq: Math.random() * 0.009 + 0.003,
-  hue: Math.random() > 0.85 ? `0,229,255` : Math.random() > 0.5 ? `123,111,255` : `220,220,255`,
-}));
+            let t = 0;
+            function draw() {
+                ctx.clearRect(0, 0, W, H);
 
-let t = 0;
-function draw() {
-  ctx.clearRect(0, 0, W, H);
+                // Туманность — синяя с фиолетовым
+                const g1 = ctx.createRadialGradient(
+                    W * 0.68,
+                    H * 0.38,
+                    0,
+                    W * 0.68,
+                    H * 0.38,
+                    W * 0.52,
+                );
+                g1.addColorStop(0, 'rgba(90,60,255,0.09)');
+                g1.addColorStop(0.5, 'rgba(0,180,255,0.04)');
+                g1.addColorStop(1, 'transparent');
+                ctx.fillStyle = g1;
+                ctx.fillRect(0, 0, W, H);
 
-  // Туманность — синяя с фиолетовым
-  const g1 = ctx.createRadialGradient(W*0.68, H*0.38, 0, W*0.68, H*0.38, W*0.52);
-  g1.addColorStop(0,   'rgba(90,60,255,0.09)');
-  g1.addColorStop(0.5, 'rgba(0,180,255,0.04)');
-  g1.addColorStop(1,   'transparent');
-  ctx.fillStyle = g1; ctx.fillRect(0,0,W,H);
+                const g2 = ctx.createRadialGradient(
+                    W * 0.18,
+                    H * 0.65,
+                    0,
+                    W * 0.18,
+                    H * 0.65,
+                    W * 0.32,
+                );
+                g2.addColorStop(0, 'rgba(120,80,255,0.06)');
+                g2.addColorStop(1, 'transparent');
+                ctx.fillStyle = g2;
+                ctx.fillRect(0, 0, W, H);
 
-  const g2 = ctx.createRadialGradient(W*0.18, H*0.65, 0, W*0.18, H*0.65, W*0.32);
-  g2.addColorStop(0,   'rgba(120,80,255,0.06)');
-  g2.addColorStop(1,   'transparent');
-  ctx.fillStyle = g2; ctx.fillRect(0,0,W,H);
+                t++;
+                stars.forEach((s) => {
+                    s.x += s.vx;
+                    s.y += s.vy;
+                    if (s.x < 0) s.x = 1000;
+                    if (s.x > 1000) s.x = 0;
+                    if (s.y < 0) s.y = 1000;
+                    if (s.y > 1000) s.y = 0;
+                    const flicker =
+                        Math.sin(t * s.freq + s.phase) * 0.38 + 0.62;
+                    ctx.beginPath();
+                    ctx.arc(
+                        (s.x / 1000) * W,
+                        (s.y / 1000) * H,
+                        s.r,
+                        0,
+                        Math.PI * 2,
+                    );
+                    ctx.fillStyle = `rgba(${s.hue},${s.o * flicker})`;
+                    ctx.fill();
+                });
 
-  t++;
-  stars.forEach(s => {
-    s.x += s.vx; s.y += s.vy;
-    if (s.x < 0) s.x = 1000; if (s.x > 1000) s.x = 0;
-    if (s.y < 0) s.y = 1000; if (s.y > 1000) s.y = 0;
-    const flicker = Math.sin(t * s.freq + s.phase) * 0.38 + 0.62;
-    ctx.beginPath();
-    ctx.arc(s.x / 1000 * W, s.y / 1000 * H, s.r, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(${s.hue},${s.o * flicker})`;
-    ctx.fill();
-  });
-
-  requestAnimationFrame(draw);
-}
-draw();
-</script>
-</body>
+                requestAnimationFrame(draw);
+            }
+            draw();
+        </script>
+    </body>
 </html>
