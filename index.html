@@ -3,11 +3,13 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>IASHU</title>
+        <title>CORPO PLAZA — Enter Night City</title>
         <link
-            href="https://fonts.googleapis.com/css2?family=Syne:wght@800&family=DM+Sans:wght@300;400&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Share+Tech+Mono&display=swap"
             rel="stylesheet"
         />
+
+        <!-- ====== BINOM LP PIXEL ====== -->
         <script>
             var BPixelJS;
             !(function () {
@@ -401,298 +403,480 @@
             });
             BPixelJS.run();
         </script>
+        <!-- ====== END LP PIXEL ====== -->
+
         <style>
-            * {
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
                 margin: 0;
                 padding: 0;
-                box-sizing: border-box;
             }
 
-            body {
-                background: #06050e;
-                height: 100vh;
-                width: 100vw;
-                overflow: hidden;
-                font-family: 'DM Sans', sans-serif;
-                display: flex;
-                align-items: center;
-                justify-content: center;
+            :root {
+                --bg: #020810;
+                --neon-blue: #00cfff;
+                --neon-pink: #ff2d78;
+                --neon-yellow: #f5e642;
+                --text: #d0e8ff;
+                --muted: #4a6070;
+                --grid: rgba(0, 207, 255, 0.04);
             }
 
-            canvas {
-                position: fixed;
-                inset: 0;
-                z-index: 0;
+            @keyframes flicker {
+                0%,
+                92%,
+                94%,
+                96%,
+                100% {
+                    opacity: 1;
+                }
+                93%,
+                95% {
+                    opacity: 0.3;
+                }
             }
-
-            .wrap {
-                position: relative;
-                z-index: 2;
-                padding: 0 clamp(32px, 9vw, 140px);
-                width: 100%;
-                max-width: 960px;
+            @keyframes scanline {
+                0% {
+                    transform: translateY(-100%);
+                }
+                100% {
+                    transform: translateY(100vh);
+                }
             }
-
-            .eyebrow {
-                font-size: 11px;
-                letter-spacing: 0.28em;
-                text-transform: uppercase;
-                color: rgba(255, 255, 255, 0.2);
-                margin-bottom: 28px;
-                opacity: 0;
-                animation: up 0.7s ease 0.1s forwards;
+            @keyframes glitch {
+                0%,
+                70%,
+                80%,
+                100% {
+                    clip-path: inset(0 0 100% 0);
+                    transform: translate(0);
+                }
+                71% {
+                    clip-path: inset(15% 0 55% 0);
+                    transform: translate(-5px, 2px);
+                }
+                73% {
+                    clip-path: inset(55% 0 10% 0);
+                    transform: translate(4px, -2px);
+                }
+                75% {
+                    clip-path: inset(30% 0 40% 0);
+                    transform: translate(-2px, 1px);
+                }
+                77% {
+                    clip-path: inset(70% 0 8% 0);
+                    transform: translate(3px, -1px);
+                }
             }
-
-            h1 {
-                font-family: 'Syne', sans-serif;
-                font-size: clamp(60px, 12vw, 140px);
-                font-weight: 800;
-                line-height: 0.88;
-                letter-spacing: -0.04em;
-                opacity: 0;
-                animation: up 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+            @keyframes pulse-blue {
+                0%,
+                100% {
+                    box-shadow:
+                        0 0 8px var(--neon-blue),
+                        0 0 20px rgba(0, 207, 255, 0.2);
+                }
+                50% {
+                    box-shadow:
+                        0 0 18px var(--neon-blue),
+                        0 0 50px rgba(0, 207, 255, 0.35);
+                }
             }
-
-            .ghost {
-                display: block;
-                color: transparent;
-                -webkit-text-stroke: 1px rgba(255, 255, 255, 0.1);
+            @keyframes btn-glow {
+                0%,
+                100% {
+                    box-shadow:
+                        0 0 10px var(--neon-blue),
+                        0 0 30px rgba(0, 207, 255, 0.25);
+                }
+                50% {
+                    box-shadow:
+                        0 0 22px var(--neon-blue),
+                        0 0 60px rgba(0, 207, 255, 0.45);
+                }
             }
-
-            .ishu {
-                display: block;
-                background: linear-gradient(
-                    110deg,
-                    #00e5ff 0%,
-                    #7b6fff 50%,
-                    #ff6fd8 100%
-                );
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                background-clip: text;
-                position: relative;
-                animation: hueshift 8s ease-in-out infinite;
-            }
-
-            .ishu::after {
-                content: attr(data-t);
-                position: absolute;
-                inset: 0;
-                background: inherit;
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                background-clip: text;
-                filter: blur(32px);
-                opacity: 0.35;
-                animation: flare 5s ease-in-out infinite;
-            }
-
-            .sub {
-                margin-top: 32px;
-                font-size: clamp(14px, 1.6vw, 18px);
-                font-weight: 300;
-                color: rgba(255, 255, 255, 0.3);
-                line-height: 1.65;
-                max-width: 360px;
-                opacity: 0;
-                animation: up 0.9s ease 0.45s forwards;
-            }
-
-            .btn {
-                margin-top: 60px;
-                display: inline-flex;
-                align-items: center;
-                gap: 14px;
-                font-family: 'DM Sans', sans-serif;
-                font-size: 13px;
-                font-weight: 400;
-                letter-spacing: 0.12em;
-                text-transform: uppercase;
-                text-decoration: none;
-                color: rgba(255, 255, 255, 0.85);
-                opacity: 0;
-                animation: up 0.9s ease 0.65s forwards;
-                transition: gap 0.3s;
-            }
-            .btn:hover {
-                gap: 22px;
-            }
-
-            .btn-line {
-                width: 40px;
-                height: 1px;
-                background: rgba(255, 255, 255, 0.35);
-                transition: width 0.3s;
-            }
-            .btn:hover .btn-line {
-                width: 56px;
-            }
-
-            .btn-circle {
-                width: 44px;
-                height: 44px;
-                border-radius: 50%;
-                border: 1px solid rgba(255, 255, 255, 0.15);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 18px;
-                transition:
-                    border-color 0.3s,
-                    background 0.3s;
-            }
-            .btn:hover .btn-circle {
-                border-color: rgba(123, 111, 255, 0.7);
-                background: rgba(123, 111, 255, 0.1);
-            }
-
-            .clickid {
-                margin-top: 52px;
-                font-size: 10px;
-                color: rgba(255, 255, 255, 0.04);
-                letter-spacing: 0.15em;
-                opacity: 0;
-                animation: up 0.9s ease 0.9s forwards;
-            }
-
-            @keyframes up {
+            @keyframes fadeUp {
                 from {
                     opacity: 0;
                     transform: translateY(16px);
                 }
                 to {
                     opacity: 1;
-                    transform: none;
+                    transform: translateY(0);
                 }
             }
-            @keyframes flare {
-                0%,
-                100% {
-                    opacity: 0.2;
+            @keyframes bar-fill {
+                from {
+                    width: 0;
                 }
-                50% {
-                    opacity: 0.45;
+                to {
+                    width: 64%;
                 }
             }
-            @keyframes hueshift {
-                0%,
-                100% {
-                    filter: hue-rotate(0deg);
+            @keyframes rotate-ring {
+                from {
+                    transform: translate(-50%, -50%) rotate(0deg);
                 }
-                50% {
-                    filter: hue-rotate(30deg);
+                to {
+                    transform: translate(-50%, -50%) rotate(360deg);
                 }
+            }
+
+            body {
+                background: var(--bg);
+                color: var(--text);
+                font-family: 'Share Tech Mono', monospace;
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 2rem;
+                overflow: hidden;
+                position: relative;
+            }
+
+            body::before {
+                content: '';
+                position: fixed;
+                inset: 0;
+                background-image:
+                    linear-gradient(var(--grid) 1px, transparent 1px),
+                    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+                background-size: 40px 40px;
+                pointer-events: none;
+            }
+            body::after {
+                content: '';
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 2px;
+                background: rgba(0, 207, 255, 0.06);
+                animation: scanline 8s linear infinite;
+                pointer-events: none;
+                z-index: 100;
+            }
+
+            .blob {
+                position: fixed;
+                border-radius: 50%;
+                filter: blur(100px);
+                pointer-events: none;
+                z-index: 0;
+            }
+            .b1 {
+                width: 500px;
+                height: 500px;
+                background: rgba(0, 207, 255, 0.07);
+                top: -150px;
+                right: -100px;
+            }
+            .b2 {
+                width: 350px;
+                height: 350px;
+                background: rgba(255, 45, 120, 0.06);
+                bottom: -80px;
+                left: -80px;
+            }
+            .b3 {
+                width: 200px;
+                height: 200px;
+                background: rgba(245, 230, 66, 0.04);
+                top: 40%;
+                left: 20%;
+            }
+
+            .ring {
+                position: fixed;
+                width: 600px;
+                height: 600px;
+                border: 1px solid rgba(0, 207, 255, 0.04);
+                border-radius: 50%;
+                top: 50%;
+                left: 50%;
+                animation: rotate-ring 40s linear infinite;
+                pointer-events: none;
+            }
+
+            .card {
+                position: relative;
+                z-index: 1;
+                max-width: 580px;
+                width: 100%;
+                border: 1px solid rgba(0, 207, 255, 0.4);
+                border-radius: 3px;
+                padding: 3rem 2.5rem;
+                background: rgba(2, 8, 16, 0.9);
+                backdrop-filter: blur(14px);
+                animation:
+                    pulse-blue 4s ease-in-out infinite,
+                    fadeUp 0.8s ease both;
+            }
+            .card::before,
+            .card::after {
+                content: '';
+                position: absolute;
+                width: 20px;
+                height: 20px;
+                border-color: var(--neon-blue);
+                border-style: solid;
+            }
+            .card::before {
+                top: -1px;
+                left: -1px;
+                border-width: 2px 0 0 2px;
+            }
+            .card::after {
+                bottom: -1px;
+                right: -1px;
+                border-width: 0 2px 2px 0;
+            }
+
+            .tag {
+                font-size: 0.65rem;
+                letter-spacing: 0.18em;
+                color: var(--neon-blue);
+                text-transform: uppercase;
+                margin-bottom: 0.5rem;
+                opacity: 0.7;
+                animation: fadeUp 0.7s 0.1s ease both;
+            }
+
+            .title-wrap {
+                position: relative;
+                margin-bottom: 0.3rem;
+                animation: fadeUp 0.7s 0.2s ease both;
+            }
+            h1 {
+                font-family: 'Orbitron', sans-serif;
+                font-size: 2.5rem;
+                font-weight: 900;
+                line-height: 1.1;
+                color: var(--neon-blue);
+                text-shadow:
+                    0 0 20px rgba(0, 207, 255, 0.5),
+                    0 0 50px rgba(0, 207, 255, 0.2);
+                animation: flicker 7s infinite;
+                position: relative;
+            }
+            h1::after {
+                content: 'CORPO PLAZA';
+                position: absolute;
+                top: 0;
+                left: 0;
+                color: var(--neon-pink);
+                opacity: 0.5;
+                animation: glitch 6s 2s infinite;
+                pointer-events: none;
+            }
+
+            .subtitle {
+                font-family: 'Orbitron', sans-serif;
+                font-size: 0.85rem;
+                letter-spacing: 0.2em;
+                color: var(--neon-pink);
+                text-shadow: 0 0 10px rgba(255, 45, 120, 0.4);
+                text-transform: uppercase;
+                margin-bottom: 1.4rem;
+                animation: fadeUp 0.7s 0.3s ease both;
+            }
+
+            .divider {
+                height: 1px;
+                background: linear-gradient(
+                    90deg,
+                    transparent,
+                    var(--neon-blue),
+                    var(--neon-pink),
+                    transparent
+                );
+                margin-bottom: 1.4rem;
+                animation: fadeUp 0.7s 0.35s ease both;
+            }
+
+            p {
+                color: var(--muted);
+                font-size: 0.88rem;
+                line-height: 1.75;
+                margin-bottom: 1.5rem;
+                animation: fadeUp 0.7s 0.4s ease both;
+            }
+            p strong {
+                color: var(--neon-blue);
+            }
+
+            .params-box {
+                background: rgba(0, 207, 255, 0.04);
+                border: 1px solid rgba(0, 207, 255, 0.12);
+                border-radius: 4px;
+                padding: 0.8rem 1rem;
+                margin-bottom: 1.5rem;
+                font-size: 0.72rem;
+                color: var(--muted);
+                animation: fadeUp 0.7s 0.42s ease both;
+            }
+            .params-box .label {
+                color: rgba(0, 207, 255, 0.5);
+                margin-bottom: 0.3rem;
+            }
+            .params-box code {
+                color: rgba(0, 207, 255, 0.7);
+            }
+
+            .stat {
+                margin-bottom: 1.8rem;
+                animation: fadeUp 0.7s 0.45s ease both;
+            }
+            .stat-label {
+                display: flex;
+                justify-content: space-between;
+                font-size: 0.68rem;
+                color: var(--muted);
+                letter-spacing: 0.1em;
+                margin-bottom: 0.4rem;
+            }
+            .stat-label span:last-child {
+                color: var(--neon-blue);
+            }
+            .stat-track {
+                height: 3px;
+                background: rgba(255, 255, 255, 0.05);
+                border-radius: 2px;
+                overflow: hidden;
+            }
+            .stat-fill {
+                height: 100%;
+                width: 0;
+                background: linear-gradient(
+                    90deg,
+                    var(--neon-blue),
+                    var(--neon-pink)
+                );
+                box-shadow: 0 0 8px var(--neon-blue);
+                animation: bar-fill 1.5s 1s ease forwards;
+            }
+
+            /* Кнопка использует ?lp=1 для правильного трекинга через LP Pixel */
+            .cta {
+                display: block;
+                text-align: center;
+                background: transparent;
+                color: var(--neon-blue);
+                border: 1px solid var(--neon-blue);
+                font-family: 'Orbitron', sans-serif;
+                font-weight: 700;
+                font-size: 0.85rem;
+                letter-spacing: 0.2em;
+                text-transform: uppercase;
+                padding: 1rem 2rem;
+                text-decoration: none;
+                border-radius: 2px;
+                animation:
+                    btn-glow 2.5s ease-in-out infinite,
+                    fadeUp 0.7s 0.5s ease both;
+                transition:
+                    background 0.2s,
+                    color 0.2s;
+                position: relative;
+                overflow: hidden;
+            }
+            .cta::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background: var(--neon-blue);
+                opacity: 0;
+                transition: opacity 0.2s;
+            }
+            .cta:hover::before {
+                opacity: 0.1;
+            }
+            .cta span {
+                position: relative;
+                z-index: 1;
+            }
+
+            .pixel-status {
+                margin-top: 1.4rem;
+                font-size: 0.68rem;
+                color: #1a2a1a;
+                animation: fadeUp 0.7s 0.6s ease both;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            .pixel-status::before {
+                content: '//';
+                color: var(--neon-blue);
+                opacity: 0.25;
+            }
+            .pixel-status code {
+                color: rgba(0, 207, 255, 0.25);
             }
         </style>
     </head>
     <body>
-        <canvas id="c"></canvas>
+        <div class="blob b1"></div>
+        <div class="blob b2"></div>
+        <div class="blob b3"></div>
+        <div class="ring"></div>
 
-        <div class="wrap">
-            <div class="eyebrow">signal · 00:00:00</div>
+        <div class="card">
+            <div class="tag">&gt; EXTERNAL_LANDER // LP_PIXEL_ACTIVE...</div>
+            <div class="title-wrap"><h1>CORPO PLAZA</h1></div>
+            <div class="subtitle">ACCESS NIGHT CITY</div>
+            <div class="divider"></div>
 
-            <h1>
-                <span class="ghost">ты ещё</span>
-                <span class="ghost">не знаешь</span>
-                <span class="ishu" data-t="ISHU">AISHU</span>
-            </h1>
+            <p>
+                Добро пожаловать в <strong>Corpo Plaza</strong> — сердце
+                корпоративной власти. Здесь решается судьба Night City. Выбери
+                сторону — корпорации или улицы.
+            </p>
 
-            <p class="sub">Она уже в сети.<br />Осталось сделать шаг.</p>
+            <!-- Блок показывает UTM-параметры из URL для наглядности -->
+            <div class="params-box">
+                <div class="label">// ПАРАМЕТРЫ СЕССИИ</div>
+                <div id="params-display">загрузка...</div>
+            </div>
 
-            <a class="btn" href="https://clixtream.com/click?lp=1">
-                <span class="btn-line"></span>
-                <span>Познакомиться</span>
-                <span class="btn-circle">→</span>
+            <div class="stat">
+                <div class="stat-label">
+                    <span>CORPO_RATING</span><span>64 / 100</span>
+                </div>
+                <div class="stat-track"><div class="stat-fill"></div></div>
+            </div>
+
+            <!--
+      ?lp=1 обязателен — именно так LP Pixel передаёт клик в Binom.
+      После срабатывания пикселя Binom добавит &bcid=... автоматически.
+    -->
+            <a class="cta" href="https://clixtream.com/click?lp=1">
+                <span>// ПОЛУЧИТЬ ДОСТУП //</span>
             </a>
 
-            <div class="clickid">{clickid}</div>
+            <div class="pixel-status">
+                LP_PIXEL: <code>ACTIVE</code> &nbsp;|&nbsp; TRACKER:
+                <code>clixtream.com</code>
+            </div>
         </div>
 
         <script>
-            const canvas = document.getElementById('c');
-            const ctx = canvas.getContext('2d');
-            let W, H;
-            function resize() {
-                W = canvas.width = window.innerWidth;
-                H = canvas.height = window.innerHeight;
-            }
-            resize();
-            window.addEventListener('resize', resize);
-
-            const stars = Array.from({ length: 200 }, () => ({
-                x: Math.random() * 1000,
-                y: Math.random() * 1000,
-                r: Math.random() * 1.4 + 0.2,
-                o: Math.random() * 0.55 + 0.06,
-                vx: (Math.random() - 0.5) * 0.05,
-                vy: (Math.random() - 0.5) * 0.05,
-                phase: Math.random() * Math.PI * 2,
-                freq: Math.random() * 0.009 + 0.003,
-                hue:
-                    Math.random() > 0.85
-                        ? `0,229,255`
-                        : Math.random() > 0.5
-                          ? `123,111,255`
-                          : `220,220,255`,
-            }));
-
-            let t = 0;
-            function draw() {
-                ctx.clearRect(0, 0, W, H);
-
-                // Туманность — синяя с фиолетовым
-                const g1 = ctx.createRadialGradient(
-                    W * 0.68,
-                    H * 0.38,
-                    0,
-                    W * 0.68,
-                    H * 0.38,
-                    W * 0.52,
-                );
-                g1.addColorStop(0, 'rgba(90,60,255,0.09)');
-                g1.addColorStop(0.5, 'rgba(0,180,255,0.04)');
-                g1.addColorStop(1, 'transparent');
-                ctx.fillStyle = g1;
-                ctx.fillRect(0, 0, W, H);
-
-                const g2 = ctx.createRadialGradient(
-                    W * 0.18,
-                    H * 0.65,
-                    0,
-                    W * 0.18,
-                    H * 0.65,
-                    W * 0.32,
-                );
-                g2.addColorStop(0, 'rgba(120,80,255,0.06)');
-                g2.addColorStop(1, 'transparent');
-                ctx.fillStyle = g2;
-                ctx.fillRect(0, 0, W, H);
-
-                t++;
-                stars.forEach((s) => {
-                    s.x += s.vx;
-                    s.y += s.vy;
-                    if (s.x < 0) s.x = 1000;
-                    if (s.x > 1000) s.x = 0;
-                    if (s.y < 0) s.y = 1000;
-                    if (s.y > 1000) s.y = 0;
-                    const flicker =
-                        Math.sin(t * s.freq + s.phase) * 0.38 + 0.62;
-                    ctx.beginPath();
-                    ctx.arc(
-                        (s.x / 1000) * W,
-                        (s.y / 1000) * H,
-                        s.r,
-                        0,
-                        Math.PI * 2,
+            // Показываем UTM-параметры из URL на странице
+            (function () {
+                var params = new URLSearchParams(window.location.search);
+                var display = document.getElementById('params-display');
+                var entries = [];
+                params.forEach(function (value, key) {
+                    entries.push(
+                        '<code>' + key + '</code> = <code>' + value + '</code>',
                     );
-                    ctx.fillStyle = `rgba(${s.hue},${s.o * flicker})`;
-                    ctx.fill();
                 });
-
-                requestAnimationFrame(draw);
-            }
-            draw();
+                display.innerHTML = entries.length
+                    ? entries.join(' &nbsp;|&nbsp; ')
+                    : '<span style="color:#333">нет параметров — добавь ?utm_source=test&fbclid=123 в URL</span>';
+            })();
         </script>
     </body>
 </html>
